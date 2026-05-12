@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>환장 RPG | Mint Tech</title>
+    <style>
+        body { margin: 0; background: #000; color: #fff; font-family: sans-serif; display: flex; flex-direction: column; height: 100vh; }
+        #header { background: #ba68c8; padding: 10px; font-weight: bold; text-align: center; }
+        #stats { display: flex; justify-content: space-around; background: #333; padding: 5px; font-size: 0.8rem; }
+        #screen { flex: 1; padding: 20px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        .msg-box { background: #222; border: 2px solid #ba68c8; padding: 15px; border-radius: 10px; width: 90%; margin-bottom: 20px; min-height: 100px; }
+        .btn-list { width: 100%; display: flex; flex-direction: column; gap: 8px; }
+        button { background: #444; color: #fff; border: 1px solid #ba68c8; padding: 12px; border-radius: 5px; font-size: 0.9rem; cursor: pointer; }
+        button:active { background: #ba68c8; }
+        .red { color: #ff5555; } .gold { color: #ffd700; }
+    </style>
+</head>
+<body>
+
+<div id="header">환장 RPG - 민트 에디션</div>
+<div id="stats">
+    <span>캐릭터: 솧툌춋</span>
+    <span id="job">직업: 초초보자</span>
+    <span id="gold">MINT: 100</span>
+</div>
+
+<div id="screen">
+    <div class="msg-box" id="msg">환장 RPG에 오신 것을 환영합니다!<br>모험을 시작해 볼까요?</div>
+    <div class="btn-list" id="btns">
+        <button onclick="stage1()">마을 이장 만나기</button>
+    </div>
+</div>
+
+<script>
+    let gold = 100;
+    let job = "초초보자";
+    const msgEl = document.getElementById('msg');
+    const btnsEl = document.getElementById('btns');
+    const goldEl = document.getElementById('gold');
+    const jobEl = document.getElementById('job');
+
+    function update() {
+        goldEl.innerText = `MINT: ${gold}`;
+        jobEl.innerText = `직업: ${job}`;
+    }
+
+    function stage1() {
+        msgEl.innerHTML = "이장님: '이보게, 여기 <b>초보 몽둥이</b>라네.'<br><span class='gold'>(공격력 +1 무기를 획득!)</span>";
+        btnsEl.innerHTML = `
+            <button onclick="stage2()">마법사 전직하러 가기</button>
+            <button onclick="stage3()">궁수 전직하러 가기</button>
+        `;
+    }
+
+    function stage2() {
+        msgEl.innerHTML = "마법사 전직관: '파이어볼을 배우려면 이 문제를 푸세요.'<br><br><b>999,999,999 * 0 = ?</b>";
+        btnsEl.innerHTML = `
+            <button onclick="fail('수학이 너무 어려워서 뇌가 터졌습니다.')">정답: 999,999,999</button>
+            <button onclick="fail('정답을 맞혔지만 전직비가 없어서 쫓겨났습니다.')">정답: 0</button>
+        `;
+    }
+
+    function stage3() {
+        msgEl.innerHTML = "궁수 전직관: '내 머리 위의 사과를 맞추면 전직 시켜주지.'";
+        btnsEl.innerHTML = `
+            <button onclick="fail('실수로 전직관을 쏴서 지명수배자가 되었습니다.')">사과를 조준한다</button>
+            <button onclick="market()">그냥 활을 팔러 간다</button>
+        `;
+    }
+
+    function market() {
+        msgEl.innerHTML = "자유시장 유저: '사냥꾼의 활, 200골드에 삼!'";
+        btnsEl.innerHTML = `
+            <button onclick="scam()">판다 (200골드)</button>
+        `;
+    }
+
+    function scam() {
+        gold = 20; // 0빼기 사기
+        msgEl.innerHTML = "<span class='red'>[환장 알림]</span><br>유저가 0을 빼고 20골드만 보냈습니다!<br><b>'님아 0 빼기 사기 모르심? ㅋㅋ 감사~ ㅅㄱ ㅋㅋㅋㅋ'</b>";
+        btnsEl.innerHTML = `<button onclick="location.reload()">환장해서 앱 종료</button>`;
+        update();
+    }
+
+    function fail(reason) {
+        msgEl.innerHTML = `<span class='red'>[GAME OVER]</span><br>${reason}`;
+        btnsEl.innerHTML = `<button onclick="location.reload()">다시 전생하기</button>`;
+    }
+</script>
+</body>
+</html>
+
